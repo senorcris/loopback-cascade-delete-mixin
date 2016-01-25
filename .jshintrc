@@ -1,0 +1,7 @@
+{
+  "mocha":true,
+  "esversion": 6,
+  "expr": true,
+  "node": true,
+  "predef": ["loopback", "expect"]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "cascade-delete-mixin",
+  "version": "1.0.0",
+  "description": "Delete related models",
+  "main": "lib/cascade-delete.js",
+  "scripts": {
+    "test": "mocha -R spec test",
+    "test-watch": "mocha -w -R spec test",
+    "pretest": "jshint ."
+  },
+  "dependencies": {
+    "debug": "^2.2.0"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "jshint": "^2.5.6",
+    "mocha": "latest",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0",
+    "loopback": "^2.14.0",
+    "loopback-boot": "^2.6.5",
+    "loopback-datasource-juggler": "^2.19.0"
+  },
+  "license": "MIT",
+  "author": "SenorCris <acxdev@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/senorcris/loopback-cascade-delete-mixin"
+  }
+}
