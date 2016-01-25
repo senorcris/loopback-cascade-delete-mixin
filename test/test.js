@@ -8,6 +8,7 @@ describe('Cascade Delete Mixin', function() {
   var ModelBuilder = require('loopback-datasource-juggler').ModelBuilder;
   var modelBuilder = new ModelBuilder();
   var mixins = modelBuilder.mixins;
+  var sandbox;
 
   before(function(done) {
     var memory = new loopback.DataSource('mem', {
@@ -47,12 +48,20 @@ describe('Cascade Delete Mixin', function() {
     memory.automigrate(['Book', 'Chapter', 'Pages'], done);
   });
 
+  beforeEach(function() {
+    sandbox = sinon.sandbox.create();
+  });
+
+  afterEach(function () {
+    sandbox.restore();
+  });
+
   it('should delete related models -- hasMany', function(done) {
     var book;
-    sinon.spy(Chapter, 'destroyAll');
+    sandbox.spy(Chapter, 'destroyAll');
     Book.create({ name: 'Of Mice and Men' }).then(function(b) {
       book = b;
-      sinon.spy(book, 'destroy');
+      sandbox.spy(book, 'destroy');
       return book.chapters.create({ name: 'Curley\'s Wife' });
     }).then(function(chapter) {
       return book.destroy();
@@ -67,7 +76,7 @@ describe('Cascade Delete Mixin', function() {
     var book;
     Book.create({ name: 'Of Mice and Men' }).then(function(b) {
       book = b;
-      sinon.spy(book, 'destroy');
+      sandbox.spy(book, 'destroy');
       return book.pages.create({ name: 'Page 1' });
     }).then(function() {
       return book.destroy();
@@ -80,11 +89,11 @@ describe('Cascade Delete Mixin', function() {
 
   it('should not continue when an error occurs and failOnErr is `true`', function(done) {
     var book;
-    var thenCb = sinon.stub();
-    sinon.stub(Audio, 'destroyAll').yields(new Error('Could not delete audio'));
+    var thenCb = sandbox.stub();
+    sandbox.stub(Audio, 'destroyAll').yields(new Error('Could not delete audio'));
     Book.create({ name: 'Of Mice and Men' }).then(function(b) {
       book = b;
-      sinon.spy(book, 'destroy');
+      sandbox.spy(book, 'destroy');
       return book.audio.create({ file: 'OfMiceAndMen.wav' });
     }).then(function() {
       return book.destroy();
