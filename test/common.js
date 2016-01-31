@@ -6,7 +6,7 @@ global.loopback = require('loopback');
 
 // setup default data sources
 global.loopback.setDefaultDataSourceForType('db', {
-  connector: global.loopback.Memory
+  connector: global.loopback.Memory,
 });
 
 // auto attach data sources to models
