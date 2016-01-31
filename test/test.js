@@ -16,7 +16,7 @@ describe('Cascade Delete Mixin', function() {
       connector: loopback.Memory
     }, modelBuilder);
     mixins.define('CascadeDelete', CascadeDelete);
-  })
+  });
 
   beforeEach(function() {
     sandbox = sinon.sandbox.create();
@@ -128,13 +128,13 @@ describe('Cascade Delete Mixin', function() {
       return Physician.create({name: 'ph1'})
         .then(function (_physician) {
           physician = _physician;
-          return Patient.create({name: 'pa1'})
+          return Patient.create({name: 'pa1'});
         }).then(function (patient) {
           return physician.patients.add(patient);
         }).then(function (app) {
           sandbox.spy(Appointment, 'destroyAll');
           physician.destroy(function(err) {
-            // TODO: through models are not fully cascading
+            // NOTE: through models are not fully cascading
             // for example deleting the physician.patient,
             // deletes the appointments but not the patients
             expect(err).to.be.not.ok;
@@ -142,6 +142,6 @@ describe('Cascade Delete Mixin', function() {
             done();
           });
         });
-    })
-  })
+    });
+  });
 });

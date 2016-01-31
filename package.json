@@ -1,8 +1,8 @@
 {
-  "name": "cascade-delete-mixin",
+  "name": "loopback-cascade-delete-mixin",
   "version": "1.0.0",
   "description": "Delete related models",
-  "main": "lib/cascade-delete.js",
+  "main": "index.js",
   "scripts": {
     "test": "mocha -R spec test",
     "test-watch": "mocha -w -R spec test",
