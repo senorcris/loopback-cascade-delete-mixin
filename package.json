@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha -R spec test",
     "test-watch": "mocha -w -R spec test",
+    "test-debug": "mocha debug -R spec test",
     "pretest": "jshint ."
   },
   "dependencies": {
