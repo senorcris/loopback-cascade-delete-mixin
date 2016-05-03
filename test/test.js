@@ -1,5 +1,7 @@
 describe('Cascade Delete Mixin', function () {
   'use strict';
+  var Driver;
+  var License;
   var Book;
   var Chapter;
   var Pages;
@@ -24,6 +26,47 @@ describe('Cascade Delete Mixin', function () {
 
   afterEach(function () {
     sandbox.restore();
+  });
+
+  describe('hasOne', function () {
+      before(function (done) {
+        Driver = db.createModel('Driver', { name: String }, {
+          mixins: {
+            CascadeDelete: {
+                relations: [
+                  {
+                    rel: 'license'
+                  }
+                ]
+            }
+          }
+        });
+
+        License = db.createModel('License', { number: 'string' });
+        Driver.hasOne('license', { model: License });
+        db.automigrate(['Driver', 'License'], done);
+      });
+
+      it('should delete related model -- hasOne', function (done) {
+        var driver;
+        Driver.hasOne('license', { model: License });
+        Driver.create({ name: 'Joe' })
+          .then(function (c) {
+            driver = c;
+            sandbox.spy(driver, 'destroy');
+            return driver.license.create({ number: '1234567' });
+        }).then(function (account) {
+            return driver.destroy();
+          }).then(function () {
+            expect(driver.destroy).to.have.been.called;
+            License.find(function(err, licenses){
+              expect(licenses).to.be.empty;
+            });
+            done();
+          }).catch(function (err) {
+            done(err);
+          });
+      });
   });
 
   describe('hasMany', function () {
